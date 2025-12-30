@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>katana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;500;700&display=swap');
+        :root { --accent: #ff2600; --glow: #ff260075; }
+        body, html { margin: 0; padding: 0; background: #020203; color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        .bg-video { position: fixed; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; z-index: -2; }
+        #bg-static { position: fixed; inset: 0; background-image: url("https://media.giphy.com/media/B1CrvUCoMxhy8/giphy.gif"); background-size: cover; background-position: center; z-index: -2; }
+        #overlay { position: fixed; inset: 0; background: black; opacity: 0.86; z-index: -1; }
+        .btn-primary { box-shadow: 0 20px 40px -10px var(--glow); transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-4px); filter: brightness(1.2); }
+    </style>
+</head>
+<body>
+    
+    <div id="bg-static"></div>
+    <div id="overlay"></div>
+    <div style="position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column;">
+        
+                <nav class="p-8 flex justify-between items-center backdrop-blur-md border-b border-white/5">
+                    <div class="flex items-center gap-4 text-2xl font-black tracking-tighter" style="text-shadow: 0 0 11.5px var(--accent)">
+                        <div class="w-8 h-8 rounded-lg shadow-lg rotate-12" style="background:#ff2600"></div>
+                        katana
+                    </div>
+                    <div class="flex gap-10 text-[10px] uppercase font-bold tracking-[0.2em] text-white/40">
+                        <a href="#" class="hover:text-white transition-colors">Proyectos</a>
+                        <a href="#" class="hover:text-white transition-colors">Tecnología</a>
+                        <a href="#" class="hover:text-white transition-colors">Contacto</a>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu w-4 h-4"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+                    </div>
+                </nav>
+
+                <div class="flex-1 flex flex-col md:flex-row items-center px-12 md:px-24 gap-20">
+                    <div class="flex-1 space-y-10">
+                        <div class="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-bold tracking-widest text-blue-400">
+                            EDICIÓN 2025 • PRO VERSION
+                        </div>
+                        <h1 class="text-8xl font-black leading-[0.85] tracking-tight" style="font-family: 'Space Grotesk'">
+                            katana
+                        </h1>
+                        <p class="text-zinc-400 text-lg max-w-md font-medium leading-relaxed">
+                            katana
+                        </p>
+                        <div class="flex gap-6">
+                            <button class="btn-primary px-12 py-6 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase text-white shadow-2xl transition-transform hover:-translate-y-1" style="background:#ff2600; box-shadow: 0 20px 40px -10px var(--glow)">
+                                entrar
+                            </button>
+                            <button class="px-12 py-6 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase text-white border border-white/10 hover:bg-white/5">
+                                Ver Demo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 relative group">
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-[3rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                        <img src="https://images.wallpapersden.com/image/download/happiest-anime-girl-hd-ai-art_bmVsZmyUmZqaraWkpJRmbmpnrWZmZ2U.jpg" class="relative z-10 w-full aspect-square object-cover rounded-[3rem] border border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&amp;w=2000'">
+                    </div>
+                </div>
+
+                <footer class="p-8 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-zinc-500 tracking-widest uppercase">
+                    <div>© 2025 katana STUDIO</div>
+                    <div class="flex gap-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="instagram" class="lucide lucide-instagram w-4 h-4 hover:text-white cursor-pointer"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="twitter" class="lucide lucide-twitter w-4 h-4 hover:text-white cursor-pointer"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="github" class="lucide lucide-github w-4 h-4 hover:text-white cursor-pointer"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    </div>
+                </footer>
+            
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
