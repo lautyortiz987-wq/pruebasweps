@@ -76,21 +76,21 @@
 </head>
 <body class="h-screen flex flex-col md:flex-row">
 
-    <!-- LOGIN SCREEN (ADMIN) -->
+    <!-- PANTALLA DE LOGIN (PROTECCIÓN) -->
     <div id="login-screen" class="fixed inset-0 z-[200] flex items-center justify-center p-6">
         <div class="glass-ui w-full max-w-md rounded-[2.5rem] p-10 text-center relative overflow-hidden">
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-blue-600/20 blur-[100px]"></div>
             <div class="w-20 h-20 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-blue-500/30">
-                <i data-lucide="shield-check" class="w-10 h-10 text-blue-400"></i>
+                <i data-lucide="lock" class="w-10 h-10 text-blue-400"></i>
             </div>
-            <h2 class="text-2xl font-bold tracking-tight mb-2 font-[Space Grotesk]">Acceso Restringido</h2>
-            <p class="text-zinc-500 text-sm mb-8">Ingresa la clave maestra para editar</p>
+            <h2 class="text-2xl font-bold tracking-tight mb-2 font-[Space Grotesk]">Acceso de Desarrollador</h2>
+            <p class="text-zinc-500 text-sm mb-8">Ingresa la clave maestra para abrir el motor</p>
             <div class="space-y-4">
-                <input type="password" id="staff-pass" placeholder="Contraseña de Staff" 
+                <input type="password" id="staff-pass" placeholder="Clave de acceso" 
                        class="w-full input-pro rounded-2xl py-4 px-4 text-center text-sm"
                        onkeypress="if(event.key === 'Enter') checkAuth()">
                 <button onclick="checkAuth()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)]">
-                    ENTRAR AL MOTOR
+                    DESBLOQUEAR EDITOR
                 </button>
             </div>
             <p id="login-error" class="text-red-500 text-[10px] mt-4 opacity-0 transition-opacity uppercase font-bold tracking-widest">Contraseña Incorrecta</p>
@@ -106,7 +106,9 @@
                 </div>
                 <h1 class="font-bold text-[10px] uppercase tracking-[0.4em] text-zinc-400">Builder Engine</h1>
             </div>
-            <span class="text-[9px] px-2 py-1 rounded bg-blue-500/10 text-blue-500 font-bold border border-blue-500/20">v2.5 PRO</span>
+            <button onclick="logout()" class="text-zinc-600 hover:text-red-500 transition-colors">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-6 space-y-8 custom-scroll">
@@ -216,6 +218,13 @@
                 error.style.opacity = '1';
                 setTimeout(() => error.style.opacity = '0', 2000);
             }
+        }
+
+        function logout() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('editor-panel').classList.add('hidden');
+            document.getElementById('preview-area').classList.add('hidden');
+            document.getElementById('staff-pass').value = '';
         }
 
         function render() {
