@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface Architect Pro</title>
+    <title>Interface Architect Pro - Editor Maestro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -20,313 +19,256 @@
             background-color: #020203; 
             color: #fafafa; 
             margin: 0;
+            overflow: hidden;
         }
 
-        /* Animaciones de Luces */
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        .glow-effect {
-            filter: drop-shadow(0 0 15px var(--glow));
-        }
-
-        .glass-card {
+        /* Efectos de Iluminación */
+        .glow-text { text-shadow: 0 0 10px var(--glow); }
+        .glow-border { box-shadow: 0 0 20px var(--glow); border-color: var(--accent); }
+        
+        .glass-ui {
             background: rgba(10, 10, 12, 0.7);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
-        .input-field { 
-            background: rgba(24, 24, 27, 0.8); 
-            border: 1px solid rgba(39, 39, 42, 1); 
-            color: white; 
+        .input-pro {
+            background: rgba(24, 24, 27, 0.6);
+            border: 1px solid rgba(63, 63, 70, 0.5);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .input-field:focus { 
-            border-color: var(--accent); 
-            outline: none; 
-            box-shadow: 0 0 20px var(--glow);
+        .input-pro:focus {
+            border-color: var(--accent);
+            background: rgba(24, 24, 27, 0.9);
+            box-shadow: 0 0 15px var(--glow);
+            outline: none;
         }
 
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        
         .bg-video {
             position: absolute;
             top: 50%;
             left: 50%;
             min-width: 100%;
             min-height: 100%;
-            width: auto;
-            height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
         }
 
-        /* Estilos de Botones Pro */
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .btn-primary:hover::after { opacity: 1; }
+        /* Estilo de la barra de desplazamiento */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
 
-        #login-screen {
-            background: radial-gradient(circle at center, #111 0%, #020203 100%);
+        .btn-glow {
+            transition: all 0.3s;
+            position: relative;
+        }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -5px var(--glow);
         }
     </style>
 </head>
-<body class="h-screen overflow-hidden">
+<body class="h-screen flex flex-col md:flex-row">
 
-    <!-- LOGIN SCREEN (ADMIN) -->
-    <div id="login-screen" class="fixed inset-0 z-[200] flex items-center justify-center p-6">
-        <div class="glass-card w-full max-w-md rounded-3xl p-10 text-center relative overflow-hidden">
-            <div class="absolute -top-24 -left-24 w-48 h-48 bg-blue-600/20 blur-[100px]"></div>
-            <div class="w-20 h-20 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-blue-500/30 glow-effect">
-                <i data-lucide="component" class="w-10 h-10 text-blue-400"></i>
-            </div>
-            <h2 class="text-2xl font-bold tracking-tight mb-2 font-[Space Grotesk]">Interface Architect</h2>
-            <p class="text-zinc-500 text-sm mb-8">Sistema de Diseño de Luces & Multimedia</p>
-            <div class="space-y-4">
-                <input type="password" id="staff-pass" placeholder="Password de Staff" 
-                       class="w-full input-field rounded-2xl py-4 px-4 text-center text-sm"
-                       onkeypress="if(event.key === 'Enter') checkAuth()">
-                <button onclick="checkAuth()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)]">
-                    INICIAR ARQUITECTO
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN INTERFACE -->
-    <div id="main-panel" class="hidden h-screen flex flex-col md:flex-row fade-in">
-        
-        <!-- SIDEBAR DE EDICIÓN -->
-        <aside class="w-full md:w-[450px] border-r border-zinc-800 flex flex-col bg-[#050506] z-50">
-            <div class="p-6 border-b border-zinc-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10">
-                        <i data-lucide="layers" class="w-4 h-4 text-blue-400"></i>
-                    </div>
-                    <h1 class="font-bold text-xs uppercase tracking-[0.3em]">Editor_Master</h1>
+    <!-- PANEL DE CONTROL (EL "CREADOR") -->
+    <aside class="w-full md:w-[420px] bg-[#09090b] border-r border-white/5 flex flex-col z-50">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+                    <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
                 </div>
-                <button onclick="location.reload()" class="text-zinc-600 hover:text-red-500"><i data-lucide="power" class="w-4 h-4"></i></button>
+                <h1 class="font-bold text-[10px] uppercase tracking-[0.4em] text-zinc-400">Builder Engine</h1>
             </div>
+            <span class="text-[9px] px-2 py-1 rounded bg-blue-500/10 text-blue-500 font-bold border border-blue-500/20">v2.5 PRO</span>
+        </div>
 
-            <div class="flex-1 overflow-y-auto p-6 space-y-10 scrollbar-hide">
-                
-                <!-- 0. ILUMINACIÓN Y FONDO -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="sparkles" class="w-3 h-3 text-blue-500"></i>
-                        <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Atmosfera & Fondo</h3>
+        <div class="flex-1 overflow-y-auto p-6 space-y-8 custom-scroll">
+            
+            <!-- SECCIÓN: ATMÓSFERA -->
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="zap" class="w-3 h-3"></i> 01. Atmósfera & Luces
+                </h3>
+                <div class="p-4 rounded-2xl glass-ui space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-[9px] uppercase text-zinc-400">URL del Fondo (Imagen/Video/GIF)</label>
+                        <input type="text" id="bg-url" placeholder="https://..." class="w-full input-pro p-3 rounded-xl text-xs" oninput="render()">
                     </div>
-                    <div class="space-y-4 p-5 glass-card rounded-2xl border border-white/5">
-                        <input type="text" id="custom-bg-url" placeholder="URL Imagen/GIF/Video..." class="w-full input-field p-3 rounded-xl text-xs" oninput="render()">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="text-[10px] text-zinc-500 uppercase">Brillo Acento</label>
-                                <input type="range" id="glow-intensity" min="0" max="100" value="50" class="w-full accent-blue-500" oninput="render()">
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] text-zinc-500 uppercase">Oscuridad</label>
-                                <input type="range" id="bg-overlay" min="0" max="95" value="60" class="w-full accent-blue-500" oninput="render()">
-                            </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase text-zinc-400">Brillo Luces</label>
+                            <input type="range" id="glow-range" min="0" max="100" value="60" class="w-full accent-blue-600" oninput="render()">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase text-zinc-400">Opacidad Overlay</label>
+                            <input type="range" id="overlay-range" min="0" max="95" value="50" class="w-full accent-blue-600" oninput="render()">
                         </div>
                     </div>
                 </div>
-
-                <!-- 1. IDENTIDAD -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="type" class="w-3 h-3 text-blue-500"></i>
-                        <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Identidad Visual</h3>
-                    </div>
-                    <div class="space-y-3">
-                        <input type="text" id="biz-name" placeholder="Nombre Marca" class="w-full input-field p-4 rounded-2xl font-bold" oninput="render()">
-                        <input type="text" id="biz-slogan" placeholder="Título Hero" class="w-full input-field p-4 rounded-2xl" oninput="render()">
-                        <textarea id="biz-desc" placeholder="Descripción corta..." class="w-full input-field p-4 rounded-2xl h-24" oninput="render()"></textarea>
-                    </div>
-                </div>
-
-                <!-- 2. BOTONES Y ACCIONES -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="mouse-pointer-2" class="w-3 h-3 text-blue-500"></i>
-                        <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Botones & Call to Action</h3>
-                    </div>
-                    <div class="flex gap-3">
-                        <input type="text" id="btn-text" value="INICIAR AHORA" class="flex-1 input-field p-3 rounded-xl text-xs" oninput="render()">
-                        <input type="color" id="accent-color" value="#3b82f6" class="w-14 h-12 bg-zinc-900 border-none rounded-xl cursor-pointer" oninput="render()">
-                    </div>
-                </div>
-
-                <!-- 3. IMAGEN PRINCIPAL -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="image" class="w-3 h-3 text-blue-500"></i>
-                        <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Media de Enfoque</h3>
-                    </div>
-                    <input type="text" id="hero-img-url" placeholder="URL Imagen de Producto/Persona..." class="w-full input-field p-4 rounded-2xl" oninput="render()">
-                </div>
-
             </div>
 
-            <!-- EXPORTAR -->
-            <div class="p-6 bg-black/40 border-t border-zinc-800">
-                <button onclick="exportFullHTML()" class="w-full bg-white text-black font-black py-5 rounded-3xl text-xs uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all transform active:scale-95 shadow-2xl">
-                    GENERAR ARCHIVO .HTML
-                </button>
+            <!-- SECCIÓN: CONTENIDO -->
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="edit-3" class="w-3 h-3"></i> 02. Textos & Marca
+                </h3>
+                <div class="space-y-3">
+                    <input type="text" id="site-name" placeholder="Nombre de Marca" class="w-full input-pro p-4 rounded-2xl text-sm font-bold" oninput="render()">
+                    <input type="text" id="hero-title" placeholder="Título Principal" class="w-full input-pro p-4 rounded-2xl text-sm" oninput="render()">
+                    <textarea id="hero-desc" placeholder="Descripción de la empresa..." class="w-full input-pro p-4 rounded-2xl text-sm h-24" oninput="render()"></textarea>
+                </div>
             </div>
-        </aside>
 
-        <!-- PREVIEW LUMINOSO -->
-        <main class="flex-1 bg-[#020203] relative overflow-hidden flex items-center justify-center">
-            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #333 1px, transparent 0); background-size: 40px 40px;"></div>
+            <!-- SECCIÓN: ESTILO -->
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="palette" class="w-3 h-3"></i> 03. Personalización de Color
+                </h3>
+                <div class="flex items-center gap-4 p-4 rounded-2xl glass-ui">
+                    <input type="color" id="accent-color" value="#3b82f6" class="w-16 h-12 bg-transparent border-none cursor-pointer" oninput="render()">
+                    <div class="flex-1">
+                        <p class="text-[10px] text-white font-bold uppercase">Color de Acento</p>
+                        <p class="text-[9px] text-zinc-500">Afecta botones, iconos y resplandores</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: MEDIA -->
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="image" class="w-3 h-3"></i> 04. Media Principal
+                </h3>
+                <input type="text" id="hero-img" placeholder="URL Imagen Principal..." class="w-full input-pro p-4 rounded-2xl text-xs" oninput="render()">
+            </div>
+
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="p-6 border-t border-white/5 bg-black/40 space-y-3">
+            <button onclick="exportSite()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl text-[10px] tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(37,99,235,0.3)]">
+                <i data-lucide="download" class="w-4 h-4"></i> Exportar Sitio Web
+            </button>
+        </div>
+    </aside>
+
+    <!-- PREVIEW EN TIEMPO REAL -->
+    <main class="flex-1 relative bg-[#020203] flex items-center justify-center p-4 md:p-12 overflow-hidden">
+        
+        <!-- Grid de fondo del editor -->
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#fff 1px, transparent 0); background-size: 30px 30px;"></div>
+
+        <!-- El "Canvas" o Lienzo del diseño creado -->
+        <div id="canvas" class="w-full h-full max-w-6xl glass-ui rounded-[40px] relative overflow-hidden flex flex-col shadow-2xl transition-all duration-500">
             
-            <!-- CONTENEDOR DE LA INTERFAZ -->
-            <div id="target-interface" class="w-[95%] h-[90%] glass-card rounded-[40px] relative overflow-hidden flex flex-col transition-all duration-700">
-                
-                <!-- FONDO DINÁMICO -->
-                <div id="bg-container" class="absolute inset-0 z-0">
-                    <div id="dynamic-bg-layer" class="absolute inset-0"></div>
-                    <div id="overlay-layer" class="absolute inset-0 bg-black pointer-events-none z-10"></div>
-                </div>
-
-                <!-- CONTENIDO REAL -->
-                <div id="dynamic-content" class="relative z-20 flex flex-col h-full"></div>
-
+            <!-- Capas de Fondo -->
+            <div id="bg-wrap" class="absolute inset-0 z-0">
+                <div id="bg-content" class="absolute inset-0 bg-center bg-cover transition-all duration-700"></div>
+                <div id="bg-overlay" class="absolute inset-0 bg-black pointer-events-none"></div>
             </div>
-        </main>
-    </div>
+
+            <!-- Capa de Contenido -->
+            <div id="ui-render" class="relative z-10 flex flex-col h-full overflow-y-auto custom-scroll">
+                <!-- Aquí se inyecta el HTML dinámicamente -->
+            </div>
+
+        </div>
+    </main>
 
     <script>
-        function checkAuth() {
-            if (document.getElementById('staff-pass').value === 'admin123') {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-panel').classList.remove('hidden');
-                render();
-            }
-        }
-
         function render() {
             const get = (id) => document.getElementById(id).value;
             
+            // Recolección de datos del "Creador"
             const data = {
-                name: get('biz-name') || "NEON_CORE",
-                slogan: get('biz-slogan') || "Interfaces del Futuro",
-                desc: get('biz-desc') || "Diseño basado en luminiscencia y arquitectura minimalista para proyectos de alto impacto visual.",
-                bg: get('custom-bg-url') || "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2070",
-                hero: get('hero-img-url') || "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=2000",
-                btn: get('btn-text'),
+                name: get('site-name') || "NEXUS_UI",
+                title: get('hero-title') || "Diseño Inteligente",
+                desc: get('hero-desc') || "Genera interfaces futuristas con un solo clic. Controla cada luz, color y textura de tu próxima gran idea.",
+                bg: get('bg-url') || "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000",
+                hero: get('hero-img') || "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070",
                 accent: get('accent-color'),
-                glow: parseInt(get('glow-intensity')),
-                overlay: parseInt(get('bg-overlay'))
+                glow: get('glow-range'),
+                overlay: get('overlay-range')
             };
 
-            // Aplicar variables CSS
+            // Aplicar Estilos Dinámicos
             document.documentElement.style.setProperty('--accent', data.accent);
             document.documentElement.style.setProperty('--glow', `${data.accent}${Math.floor(data.glow * 2.55).toString(16).padStart(2, '0')}`);
 
-            // Render Fondo
-            const bgLayer = document.getElementById('dynamic-bg-layer');
-            const overlay = document.getElementById('overlay-layer');
-            overlay.style.opacity = data.overlay / 100;
+            const bgContent = document.getElementById('bg-content');
+            const bgOverlay = document.getElementById('bg-overlay');
+            
+            bgOverlay.style.opacity = data.overlay / 100;
 
             if (data.bg.match(/\.(mp4|webm|ogg)$/)) {
-                bgLayer.innerHTML = `<video class="bg-video" autoplay loop muted playsinline><source src="${data.bg}" type="video/mp4"></video>`;
-                bgLayer.style.backgroundImage = "none";
+                bgContent.innerHTML = `<video class="bg-video" autoplay loop muted playsinline><source src="${data.bg}" type="video/mp4"></video>`;
+                bgContent.style.backgroundImage = "none";
             } else {
-                bgLayer.innerHTML = "";
-                bgLayer.style.backgroundImage = `url('${data.bg}')`;
-                bgLayer.style.backgroundSize = "cover";
-                bgLayer.style.backgroundPosition = "center";
+                bgContent.innerHTML = "";
+                bgContent.style.backgroundImage = `url('${data.bg}')`;
             }
 
-            // Render Contenido
-            document.getElementById('dynamic-content').innerHTML = `
-                <nav class="p-8 flex justify-between items-center backdrop-blur-md border-b border-white/5">
-                    <div class="flex items-center gap-4 text-2xl font-black tracking-tighter" style="text-shadow: 0 0 ${data.glow/4}px var(--accent)">
-                        <div class="w-8 h-8 rounded-lg shadow-lg rotate-12" style="background:${data.accent}"></div>
+            // Inyectar la Interfaz creada
+            document.getElementById('ui-render').innerHTML = `
+                <header class="p-8 flex justify-between items-center backdrop-blur-xl border-b border-white/5">
+                    <div class="flex items-center gap-3 text-xl font-black tracking-tighter" style="text-shadow: 0 0 ${data.glow/5}px var(--accent)">
+                        <div class="w-6 h-6 rounded rotate-12" style="background:var(--accent)"></div>
                         ${data.name}
                     </div>
-                    <div class="flex gap-10 text-[10px] uppercase font-bold tracking-[0.2em] text-white/40">
-                        <a href="#" class="hover:text-white transition-colors">Proyectos</a>
-                        <a href="#" class="hover:text-white transition-colors">Tecnología</a>
-                        <a href="#" class="hover:text-white transition-colors">Contacto</a>
+                    <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+                        <a href="#" class="hover:text-white transition-colors">Innovación</a>
+                        <a href="#" class="hover:text-white transition-colors">Arquitectura</a>
+                        <a href="#" class="hover:text-white transition-colors">Labs</a>
                     </div>
-                    <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
-                        <i data-lucide="menu" class="w-4 h-4"></i>
-                    </div>
-                </nav>
+                    <button class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-wider hover:bg-zinc-200 transition-all">Acceso</button>
+                </header>
 
-                <div class="flex-1 flex flex-col md:flex-row items-center px-12 md:px-24 gap-20">
-                    <div class="flex-1 space-y-10">
-                        <div class="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-bold tracking-widest text-blue-400">
-                            EDICIÓN 2025 • PRO VERSION
+                <div class="flex-1 flex flex-col md:flex-row items-center px-10 md:px-20 py-12 gap-16">
+                    <div class="flex-1 space-y-8">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[9px] font-bold uppercase tracking-widest text-blue-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Sistema Activo
                         </div>
-                        <h1 class="text-8xl font-black leading-[0.85] tracking-tight" style="font-family: 'Space Grotesk'">
-                            ${data.slogan}
+                        <h1 class="text-7xl font-black tracking-tighter leading-[0.9]" style="font-family: 'Space Grotesk'">
+                            ${data.title}
                         </h1>
-                        <p class="text-zinc-400 text-lg max-w-md font-medium leading-relaxed">
+                        <p class="text-zinc-400 text-lg font-medium leading-relaxed max-w-lg">
                             ${data.desc}
                         </p>
-                        <div class="flex gap-6">
-                            <button class="btn-primary px-12 py-6 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase text-white shadow-2xl transition-transform hover:-translate-y-1" style="background:${data.accent}; box-shadow: 0 20px 40px -10px var(--glow)">
-                                ${data.btn}
-                            </button>
-                            <button class="px-12 py-6 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase text-white border border-white/10 hover:bg-white/5">
-                                Ver Demo
+                        <div class="flex gap-4">
+                            <button class="btn-glow px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-white" style="background:var(--accent)">
+                                Empezar Proyecto
                             </button>
                         </div>
                     </div>
-
-                    <div class="flex-1 relative group">
-                        <div class="absolute -inset-4 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-[3rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                        <img src="${data.hero}" class="relative z-10 w-full aspect-square object-cover rounded-[3rem] border border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=2000'">
+                    <div class="flex-1 w-full max-w-xl">
+                        <div class="relative group">
+                            <div class="absolute -inset-2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                            <img src="${data.hero}" class="relative z-10 w-full aspect-square object-cover rounded-[3rem] border border-white/10 shadow-2xl transition-all duration-500 group-hover:scale-[1.01]" onerror="this.src='https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070'">
+                        </div>
                     </div>
                 </div>
 
-                <footer class="p-8 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-zinc-500 tracking-widest uppercase">
-                    <div>© 2025 ${data.name} STUDIO</div>
+                <footer class="p-8 border-t border-white/5 flex justify-between text-[9px] font-bold text-zinc-500 tracking-[0.3em] uppercase">
+                    <div>© 2025 ${data.name} — Engine V2</div>
                     <div class="flex gap-6">
-                        <i data-lucide="instagram" class="w-4 h-4 hover:text-white cursor-pointer"></i>
-                        <i data-lucide="twitter" class="w-4 h-4 hover:text-white cursor-pointer"></i>
-                        <i data-lucide="github" class="w-4 h-4 hover:text-white cursor-pointer"></i>
+                        <i data-lucide="twitter" class="w-4 h-4 cursor-pointer hover:text-white transition-colors"></i>
+                        <i data-lucide="github" class="w-4 h-4 cursor-pointer hover:text-white transition-colors"></i>
                     </div>
                 </footer>
             `;
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         }
 
-        function exportFullHTML() {
-            const name = document.getElementById('biz-name').value || "mi_interfaz";
-            const content = document.getElementById('dynamic-content').innerHTML;
-            const bgLayer = document.getElementById('dynamic-bg-layer');
-            const overlay = document.getElementById('overlay-layer');
+        function exportSite() {
+            const name = document.getElementById('site-name').value || "mi_interfaz";
+            const htmlContent = document.getElementById('ui-render').innerHTML;
+            const bgElement = document.getElementById('bg-content');
+            const overlayOp = document.getElementById('overlay-range').value / 100;
             const accent = document.getElementById('accent-color').value;
-            const glowVal = document.getElementById('glow-intensity').value;
-            
-            let bgStyles = "";
-            let videoTag = "";
+            const glow = document.getElementById('glow-range').value;
 
-            if (bgLayer.innerHTML.includes('video')) {
-                videoTag = bgLayer.innerHTML;
-            } else {
-                bgStyles = bgLayer.style.backgroundImage;
-            }
-
-            const fullDoc = `<!DOCTYPE html>
+            const finalDoc = `<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -336,34 +278,33 @@
     <script src="https://unpkg.com/lucide@latest"><\/script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;500;700&display=swap');
-        :root { --accent: ${accent}; --glow: ${accent}${Math.floor(glowVal * 2.55).toString(16).padStart(2, '0')}; }
-        body, html { margin: 0; padding: 0; background: #020203; color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        .bg-video { position: fixed; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; z-index: -2; }
-        #bg-static { position: fixed; inset: 0; background-image: ${bgStyles}; background-size: cover; background-position: center; z-index: -2; }
-        #overlay { position: fixed; inset: 0; background: black; opacity: ${overlay.style.opacity}; z-index: -1; }
-        .btn-primary { box-shadow: 0 20px 40px -10px var(--glow); transition: all 0.3s; }
-        .btn-primary:hover { transform: translateY(-4px); filter: brightness(1.2); }
+        :root { --accent: ${accent}; --glow: ${accent}${Math.floor(glow * 2.55).toString(16).padStart(2, '0')}; }
+        body, html { margin: 0; padding: 0; background: #020203; color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+        .bg-fixed { position: fixed; inset: 0; z-index: -2; background-image: ${bgElement.style.backgroundImage}; background-size: cover; background-position: center; }
+        .video-fixed { position: fixed; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; z-index: -2; }
+        .overlay-fixed { position: fixed; inset: 0; background: black; opacity: ${overlayOp}; z-index: -1; }
+        .btn-glow { box-shadow: 0 15px 35px -5px var(--glow); transition: all 0.3s; }
+        .btn-glow:hover { transform: translateY(-3px); filter: brightness(1.2); }
     </style>
 </head>
 <body>
-    ${videoTag}
-    <div id="bg-static"></div>
-    <div id="overlay"></div>
+    ${bgElement.innerHTML ? bgElement.innerHTML.replace('bg-video', 'video-fixed') : '<div class="bg-fixed"></div>'}
+    <div class="overlay-fixed"></div>
     <div style="position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column;">
-        ${content}
+        ${htmlContent}
     </div>
     <script>lucide.createIcons();<\/script>
 </body>
 </html>`;
 
-            const blob = new Blob([fullDoc], { type: 'text/html' });
+            const blob = new Blob([finalDoc], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = `${name.toLowerCase().replace(/\s+/g, '_')}.html`;
             a.click();
         }
 
-        window.onload = () => lucide.createIcons();
+        window.onload = render;
     </script>
 </body>
 </html>
